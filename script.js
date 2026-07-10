@@ -224,15 +224,20 @@ const lightboxNext = document.getElementById('lightbox-next');
 let currentImageIndex = 0;
 
 // Kumpulkan data setiap item galeri (foto atau video)
-const galleryMedia = galleryItemEls.map(item => {
-  const isVideo = item.classList.contains('is-video');
-  const el = isVideo ? item.querySelector('video') : item.querySelector('img');
-  return {
-    type: isVideo ? 'video' : 'image',
-    src: el.getAttribute('src'),
-    alt: el.getAttribute('alt') || '',
-  };
-});
+const galleryMedia = galleryItemEls
+    .map(item => {
+        const isVideo = item.classList.contains('is-video');
+        const el = isVideo ? item.querySelector('video') : item.querySelector('img');
+
+        if (!el) return null;
+
+        return {
+            type: isVideo ? 'video' : 'image',
+            src: el.getAttribute('src'),
+            alt: el.getAttribute('alt') || ''
+        };
+    })
+    .filter(Boolean);
 
 function renderLightboxMedia(index){
   const data = galleryMedia[index];
